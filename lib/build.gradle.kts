@@ -6,11 +6,6 @@ plugins {
     signing
 }
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 repositories {
     mavenCentral()
 }
@@ -104,5 +99,14 @@ tasks.javadoc {
     if (JavaVersion.current().isJava9Compatible) {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.withType<JavaCompile> {
+    options.release.set(8)
 }
 
