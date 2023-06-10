@@ -3,6 +3,12 @@ import java.net.URI
 plugins {
     `java-library`
     `maven-publish`
+    signing
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -40,7 +46,7 @@ tasks.named<Test>("test") {
 
 publishing {
     publications{
-        create<MavenPublication>("maven"){
+        create<MavenPublication>("mavenJava"){
             groupId = "io.github.ozzyozbourne"
             artifactId = "rdwr"
             version = "0.1.0"
@@ -87,6 +93,16 @@ publishing {
                 password = providers.gradleProperty("storedPassword").get()
             }
         }
+    }
+}
+
+signing {
+    sign(publishing.publications["mavenJava"])
+}
+
+tasks.javadoc {
+    if (JavaVersion.current().isJava9Compatible) {
+        (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
 }
 
