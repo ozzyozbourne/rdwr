@@ -44,7 +44,7 @@ publishing {
         create<MavenPublication>("mavenJava"){
             groupId = "io.github.ozzyozbourne"
             artifactId = "rdwr"
-            version = "0.1.0"
+            version = "0.2.0"
 
             from(components["java"])
 
