@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Predicate;
@@ -35,11 +34,12 @@ public final class Rds {
         return Optional.of(JsonPath.read(new FileReader(pathToFile), pathToGet, filters));
     }
 
-    public static <T> Optional<List<T>> rdCsv(final String filePath, final Class<T> t, final char separator) throws IOException {
+    public static <T> Optional<List<T>> rdCsv(final String filePath, final Class<T> t, final char separator, final boolean skipFirstRow) throws IOException {
         final CsvMapper csvMapper = CsvMapper.csvBuilder().build();
-        final CsvSchema schema = csvMapper.schemaFor(t).withSkipFirstDataRow(true).withColumnSeparator(separator);
         Optional<List<T>> optionalTList;
-        try(MappingIterator<T> iterator = csvMapper.readerFor(t).with(schema).readValues(new File(filePath))){
+        try(MappingIterator<T> iterator = csvMapper.readerFor(t)
+                .with(csvMapper.schemaFor(t).withSkipFirstDataRow(skipFirstRow).withColumnSeparator(separator))
+                .readValues(new File(filePath))){
             optionalTList = Optional.of(iterator.readAll());
         }return optionalTList;
     }
