@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.toml.TomlFactory;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
+import com.fasterxml.jackson.dataformat.toml.TomlReadFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.jayway.jsonpath.JsonPath;
@@ -101,6 +103,20 @@ public final class Rdwr {
 
     /***
      *
+     * @param filePath path to toml file
+     * @param t pojo class type
+     * @return Optional Object of type T
+     * @param <T> Expected java type
+     * @throws IOException when file exception occurs
+     */
+    public static <T> Optional<T>  readTomlToPojo(final String filePath, final Class<T> t) throws IOException {
+        return Optional.of(new ObjectMapper(new TomlFactory())
+                .findAndRegisterModules()
+                .readValue(new File(filePath), t));
+    }
+
+    /***
+     *
      * @param filePath path to yaml file
      * @param t pojo class type
      * @param <T> Expected java type
@@ -109,6 +125,20 @@ public final class Rdwr {
     public static <T> void writePojoToYaml(final String filePath, final T t) throws IOException {
         new ObjectMapper(new YAMLFactory()
                 .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
+                .findAndRegisterModules()
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .writeValue(new File(filePath), t);
+    }
+
+    /***
+     *
+     * @param filePath path to toml file
+     * @param t pojo class type
+     * @param <T> Expected java type
+     * @throws IOException when file exception occurs
+     */
+    public static <T> void writePojoToToml(final String filePath, final T t) throws IOException {
+        new ObjectMapper(new TomlFactory())
                 .findAndRegisterModules()
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .writeValue(new File(filePath), t);

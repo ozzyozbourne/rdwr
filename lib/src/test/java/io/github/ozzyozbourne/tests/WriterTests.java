@@ -8,8 +8,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static io.github.ozzyozbourne.Rdwr.readYamlToPojo;
-import static io.github.ozzyozbourne.Rdwr.writePojoToYaml;
+import static io.github.ozzyozbourne.Rdwr.*;
 
 @Test
 public final class WriterTests {
@@ -18,13 +17,18 @@ public final class WriterTests {
     private static final String PATH_TO_RC_WR = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "write" + File.separator;
 
     public void YamlTestOne() throws IOException {
-        val locRd = PATH_TO_RC_RD + "YamlTest.yaml";
-        val locWr = PATH_TO_RC_WR + "YamlTest.yaml";
-
-        val res = readYamlToPojo(locRd, Order.class);
+        val res = readYamlToPojo(PATH_TO_RC_RD + "YamlTest.yaml", Order.class);
         Assert.assertTrue(res.isPresent());
 
-        writePojoToYaml(locWr, res.get());
-        Assert.assertTrue(new File(locWr).exists());
+        writePojoToYaml(PATH_TO_RC_WR + "YamlTest.yaml", res.get());
+        Assert.assertTrue(new File(PATH_TO_RC_WR + "YamlTest.yaml").exists());
+    }
+
+    public void TomlTestOne() throws IOException {
+        val res = readTomlToPojo(PATH_TO_RC_RD + "TomlTest.toml", Order.class);
+        Assert.assertTrue(res.isPresent());
+
+        writePojoToToml(PATH_TO_RC_WR + "TomlTest.toml", res.get());
+        Assert.assertTrue(new File(PATH_TO_RC_WR + "TomlTest.toml").exists());
     }
 }
