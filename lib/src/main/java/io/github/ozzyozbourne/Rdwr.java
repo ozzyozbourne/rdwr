@@ -36,8 +36,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T> srcInToml (final String pathToGet, final String pathToFile) throws IOException {
-        final JsonNode jsonNode = new TomlMapper().readTree(new File(pathToFile));
-        return Optional.of(JsonPath.read(jsonNode.toString(), pathToGet));
+        return Optional.of(JsonPath.read(new TomlMapper().readTree(new File(pathToFile)).toString(), pathToGet));
     }
 
     /**
@@ -49,8 +48,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T> srcInYaml (final String pathToGet, final String pathToFile) throws IOException {
-        final JsonNode jsonNode = new ObjectMapper().valueToTree(new Yaml().load(new FileReader(pathToFile)));
-        return Optional.of(JsonPath.read(jsonNode.toString(), pathToGet));
+        return Optional.of(JsonPath.read(new ObjectMapper().valueToTree(new Yaml().load(new FileReader(pathToFile))).toString(), pathToGet));
     }
 
     /**
@@ -76,7 +74,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static <T> Optional<List<T>> rdCsv(final String filePath, final Class<T> t, final char separator, final boolean skipFirstRow) throws IOException {
+    public static <T> Optional<List<T>> readCsvToPojo(final String filePath, final Class<T> t, final char separator, final boolean skipFirstRow) throws IOException {
         final CsvMapper csvMapper = CsvMapper.csvBuilder().build();
         Optional<List<T>> optionalTList;
         try(MappingIterator<T> iterator = csvMapper.readerFor(t)
@@ -84,6 +82,26 @@ public final class Rdwr {
                 .readValues(new File(filePath))){
             optionalTList = Optional.of(iterator.readAll());
         }return optionalTList;
+    }
+
+    /***
+     *
+     * @param filePath path to csv file
+     * @param tList pojo class type List
+     * @param t pojo class type
+     * @param separator csv file separator being used
+     * @param header whether to write or leave the header row
+     * @param <T> Expected java type
+     * @throws IOException when file exception occurs
+     */
+    public static <T> void writePojoToCsv(final String filePath, List<T> tList, final Class<T> t, final char separator, final boolean header) throws IOException {
+        final CsvMapper mapper = new CsvMapper();
+        mapper.writer(mapper
+                .schemaFor(t)
+                .withColumnSeparator(separator)
+                .withUseHeader(header)
+                .withoutQuoteChar())
+                .writeValue(new File(filePath), tList);
     }
 
     /***
