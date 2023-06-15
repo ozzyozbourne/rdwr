@@ -6,3 +6,5 @@ build
 #files
 gradle.properties
 secret-keys.gpg
+lib/gradleOutput
+lib/testngOutput

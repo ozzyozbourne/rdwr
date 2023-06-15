@@ -4,6 +4,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
+    id("io.freefair.lombok") version "8.0.1"
 }
 
 repositories {
@@ -17,13 +18,12 @@ dependencies {
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.15.2")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-properties:2.15.2")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.2")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     api("com.jayway.jsonpath:json-path:2.8.0")
     api("org.yaml:snakeyaml:2.0")
 
     testImplementation("org.testng:testng:7.8.0")
     testImplementation("net.datafaker:datafaker:1.9.0")
-
-    testCompileOnly("org.projectlombok:lombok:1.18.28")
 }
 
 java {
@@ -32,8 +32,15 @@ java {
     }
 }
 
+reporting.baseDir = file("gradleOutput")
+
+
 tasks.named<Test>("test") {
-    useTestNG()
+    useTestNG{
+        isUseDefaultListeners = true
+        suites("src/test/resources/testNGxmls/${providers.gradleProperty("xmlFileName").get()}.xml")
+        outputDirectory = file("$projectDir/testngOutput")
+    }
     testLogging {
         events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
     }
@@ -44,7 +51,7 @@ publishing {
         create<MavenPublication>("mavenJava"){
             groupId = "io.github.ozzyozbourne"
             artifactId = "rdwr"
-            version = "0.2.0"
+            version = "0.3.0"
 
             from(components["java"])
 
@@ -107,6 +114,6 @@ java {
 }
 
 tasks.withType<JavaCompile> {
-    options.release.set(8)
+    options.release.set(17)
 }
 
