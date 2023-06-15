@@ -32,8 +32,15 @@ java {
     }
 }
 
+reporting.baseDir = file("gradleOutput")
+
+
 tasks.named<Test>("test") {
-    useTestNG()
+    useTestNG{
+        isUseDefaultListeners = true
+        suites("src/test/resources/testNGxmls/${providers.gradleProperty("xmlFileName").get()}.xml")
+        outputDirectory = file("$projectDir/testngOutput")
+    }
     testLogging {
         events("PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR")
     }
