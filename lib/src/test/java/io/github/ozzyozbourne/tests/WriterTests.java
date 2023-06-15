@@ -1,6 +1,6 @@
 package io.github.ozzyozbourne.tests;
 
-import io.github.ozzyozbourne.pojos.yaml.Order;
+import io.github.ozzyozbourne.pojos.Order;
 import lombok.val;
 import org.testng.Assert;
 import org.testng.annotations.Test;

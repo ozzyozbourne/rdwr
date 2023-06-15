@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
+ *This class contains reader and writers for YAML, TOML, JSON, XML CSV and PROPERTIES file formats
  */
 public final class Rdwr {
 
