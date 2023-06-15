@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static io.github.ozzyozbourne.Rds.readYamlToPojo;
+import static io.github.ozzyozbourne.Rdwr.readYamlToPojo;
 
 @Test
 public final class ReaderTests {

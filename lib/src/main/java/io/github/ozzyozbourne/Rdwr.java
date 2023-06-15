@@ -21,9 +21,9 @@ import java.util.Optional;
 /**
  *
  */
-public final class Rds {
+public final class Rdwr {
 
-    private Rds() {
+    private Rdwr() {
     }
 
     /**

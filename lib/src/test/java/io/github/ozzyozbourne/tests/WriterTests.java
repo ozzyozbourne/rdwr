@@ -8,8 +8,8 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static io.github.ozzyozbourne.Rds.readYamlToPojo;
-import static io.github.ozzyozbourne.Rds.writePojoToYaml;
+import static io.github.ozzyozbourne.Rdwr.readYamlToPojo;
+import static io.github.ozzyozbourne.Rdwr.writePojoToYaml;
 
 @Test
 public final class WriterTests {
