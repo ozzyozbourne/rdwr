@@ -94,7 +94,9 @@ public final class Rds {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T>  readYamlToPojo(final String filePath, final Class<T> t) throws IOException {
-      return Optional.of(new ObjectMapper(new YAMLFactory()).findAndRegisterModules().readValue(new File(filePath), t));
+      return Optional.of(new ObjectMapper(new YAMLFactory())
+              .findAndRegisterModules()
+              .readValue(new File(filePath), t));
     }
 
     /***
