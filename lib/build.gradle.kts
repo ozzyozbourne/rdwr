@@ -4,6 +4,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
+    id("io.freefair.lombok") version "8.0.1"
 }
 
 repositories {
@@ -17,13 +18,12 @@ dependencies {
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.15.2")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-properties:2.15.2")
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.2")
+    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     api("com.jayway.jsonpath:json-path:2.8.0")
     api("org.yaml:snakeyaml:2.0")
 
     testImplementation("org.testng:testng:7.8.0")
     testImplementation("net.datafaker:datafaker:1.9.0")
-
-    testCompileOnly("org.projectlombok:lombok:1.18.28")
 }
 
 java {
@@ -107,6 +107,6 @@ java {
 }
 
 tasks.withType<JavaCompile> {
-    options.release.set(8)
+    options.release.set(17)
 }
 

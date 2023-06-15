@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Predicate;
 import org.yaml.snakeyaml.Yaml;
@@ -80,5 +81,9 @@ public final class Rds {
                 .readValues(new File(filePath))){
             optionalTList = Optional.of(iterator.readAll());
         }return optionalTList;
+    }
+
+    public static <T> Optional<T>  getYamlToPojo(final String filePath, final Class<T> t) throws IOException {
+      return Optional.of(new ObjectMapper(new YAMLFactory()).findAndRegisterModules().readValue(new File(filePath), t));
     }
 }
