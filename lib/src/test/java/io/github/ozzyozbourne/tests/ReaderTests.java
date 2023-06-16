@@ -8,8 +8,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 
-import static io.github.ozzyozbourne.Rdwr.readTomlToPojo;
-import static io.github.ozzyozbourne.Rdwr.readYamlToPojo;
+import static io.github.ozzyozbourne.Rdwr.*;
 
 @Test
 public final class ReaderTests {
@@ -31,8 +30,17 @@ public final class ReaderTests {
     public void CsvTestOne(){
 
     }
+
     public void JsonTestOne(){
 
+    }
+
+    public void PropTestOne() throws IOException {
+        val res = getValueFromProp(PATH_TO_RC + "Test.properties");
+        Assert.assertTrue(res.isPresent());
+        Assert.assertEquals(res.get().get("age"), "654654");
+        Assert.assertEquals(res.get().get("name"), "osaid");
+        Assert.assertEquals(res.get().get("height"), "54685465131354311cm");
     }
 
 }

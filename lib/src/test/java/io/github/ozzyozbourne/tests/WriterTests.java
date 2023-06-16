@@ -31,4 +31,12 @@ public final class WriterTests {
         writePojoToToml(PATH_TO_RC_WR + "TomlTest.toml", res.get());
         Assert.assertTrue(new File(PATH_TO_RC_WR + "TomlTest.toml").exists());
     }
+
+    public void PropTestOne() throws IOException {
+        val res = getValueFromProp(PATH_TO_RC_RD + "Test.properties");
+        Assert.assertTrue(res.isPresent());
+
+        writePojoToProperties(PATH_TO_RC_WR + "Test.properties", res.get());
+        Assert.assertTrue(new File(PATH_TO_RC_WR + "Test.properties").exists());
+    }
 }

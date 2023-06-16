@@ -1,10 +1,9 @@
 package io.github.ozzyozbourne;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
 import com.fasterxml.jackson.dataformat.toml.TomlFactory;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -13,10 +12,9 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Predicate;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -78,7 +76,9 @@ public final class Rdwr {
         final CsvMapper csvMapper = CsvMapper.csvBuilder().build();
         Optional<List<T>> optionalTList;
         try(MappingIterator<T> iterator = csvMapper.readerFor(t)
-                .with(csvMapper.schemaFor(t).withSkipFirstDataRow(skipFirstRow).withColumnSeparator(separator))
+                .with(csvMapper.schemaFor(t)
+                        .withSkipFirstDataRow(skipFirstRow)
+                        .withColumnSeparator(separator))
                 .readValues(new File(filePath))){
             optionalTList = Optional.of(iterator.readAll());
         }return optionalTList;
@@ -94,7 +94,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static <T> void writePojoToCsv(final String filePath, List<T> tList, final Class<T> t, final char separator, final boolean header) throws IOException {
+    public static synchronized <T> void writePojoToCsv(final String filePath, final List<T> tList, final Class<T> t, final char separator, final boolean header) throws IOException {
         final CsvMapper mapper = new CsvMapper();
         mapper.writer(mapper
                 .schemaFor(t)
@@ -139,7 +139,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static <T> void writePojoToYaml(final String filePath, final T t) throws IOException {
+    public static synchronized <T> void writePojoToYaml(final String filePath, final T t) throws IOException {
         new ObjectMapper(new YAMLFactory()
                 .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
                 .findAndRegisterModules()
@@ -154,10 +154,54 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static <T> void writePojoToToml(final String filePath, final T t) throws IOException {
+    public static synchronized <T> void writePojoToToml(final String filePath, final T t) throws IOException {
         new ObjectMapper(new TomlFactory())
                 .findAndRegisterModules()
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .writeValue(new File(filePath), t);
+    }
+
+    /**
+     *
+     * @param filePath path to properties file
+     * @return optional type containing and map of string and string
+     * @throws IOException when file exception occurs
+     */
+    public static Optional<Map<String, String>> getValueFromProp(final String filePath) throws IOException {
+        return Optional.of(new JavaPropsMapper().readValue(new File(filePath), new TypeReference<>(){}));
+    }
+
+    /**
+     *
+     * @param filePath path to properties file
+     * @param t Pojo class mapped to properties
+     * @return optional object containing the pojo mapped to properties
+     * @param <T> Expected java type
+     * @throws IOException when file exception occurs
+     */
+    public static <T> Optional<T> getValueFromProp(final String filePath, final Class<T> t) throws IOException {
+        return Optional.of(new JavaPropsMapper().readValue(new File(filePath), t));
+    }
+
+    /**
+     *
+     * @param filePath path to properties file
+     * @param t Property Pojo
+     * @param <T> Expected java type
+     * @throws IOException when file exception occurs
+     */
+    public static synchronized <T> void writePojoToProperties(final String filePath, final T t) throws IOException {
+        new JavaPropsMapper().writerFor(t.getClass()).writeValue(new File(filePath), t);
+    }
+
+    /***
+     *
+     * @param filePath path to properties file
+     * @param tMap Property Map
+     * @param <T> Expected java type
+     * @throws IOException when file exception occurs
+     */
+    public static synchronized <T extends Map<String, String>> void writePojoToProperties(final String filePath, final T tMap) throws IOException {
+        new JavaPropsMapper().writerFor(new TypeReference<T>() {}).writeValue(new File(filePath), tMap);
     }
 }
