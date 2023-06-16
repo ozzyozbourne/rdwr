@@ -24,6 +24,7 @@ dependencies {
 
     testImplementation("org.testng:testng:7.8.0")
     testImplementation("net.datafaker:datafaker:1.9.0")
+    testImplementation("ch.qos.logback:logback-classic:1.4.5")
 }
 
 java {
