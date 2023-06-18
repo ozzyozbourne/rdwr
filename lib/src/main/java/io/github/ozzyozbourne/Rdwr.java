@@ -13,6 +13,8 @@ import com.jayway.jsonpath.Predicate;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -59,7 +61,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T> srcInJsn (final String pathToGet, final String pathToFile, final Predicate... filters) throws IOException {
-        return Optional.of(JsonPath.read(new FileReader(pathToFile), pathToGet, filters));
+        return Optional.of(JsonPath.read(Files.newInputStream(Paths.get(pathToFile)), pathToGet, filters));
     }
 
     /**

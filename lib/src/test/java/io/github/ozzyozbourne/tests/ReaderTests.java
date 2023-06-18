@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 import static io.github.ozzyozbourne.Rdwr.*;
 
@@ -37,7 +39,7 @@ public final class ReaderTests {
     }
 
     public void TomlTestTwo() throws IOException {
-        val res = srcInToml("$.ORDER_NO", PATH_TO_RC + "TomlTest.toml");
+        Optional<String> res = srcInToml("$.ORDER_NO", PATH_TO_RC + "TomlTest.toml");
         Assert.assertTrue(res.isPresent());
         Assert.assertEquals(res.get(), "A001");
     }
@@ -62,8 +64,10 @@ public final class ReaderTests {
         Assert.assertEquals(csvOptional.get().size(), 3);
     }
 
-    public void JsonTestOne(){
-
+    public void JsonTestOne() throws IOException {
+        Optional<List<Integer>> res = srcInJsn("$.code.rbga", PATH_TO_RC + "JsonTest.json");
+        Assert.assertTrue(res.isPresent());
+        Assert.assertEquals(res.get(), List.of(255, 255, 255, 1));
     }
 
     public void PropTestOne() throws IOException {
