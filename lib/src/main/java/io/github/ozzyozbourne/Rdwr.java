@@ -94,7 +94,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static synchronized <T> void writePojoToCsv(final String filePath, final List<T> tList, final Class<T> t, final char separator, final boolean useHeader) throws IOException {
+    public static <T> void writePojoToCsv(final String filePath, final List<T> tList, final Class<T> t, final char separator, final boolean useHeader) throws IOException {
         final CsvMapper mapper = new CsvMapper();
         mapper.writer(mapper
                 .schemaFor(t)
@@ -139,7 +139,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static synchronized <T> void writePojoToYaml(final String filePath, final T t) throws IOException {
+    public static <T> void writePojoToYaml(final String filePath, final T t) throws IOException {
         new ObjectMapper(new YAMLFactory()
                 .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
                 .findAndRegisterModules()
@@ -154,7 +154,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static synchronized <T> void writePojoToToml(final String filePath, final T t) throws IOException {
+    public static <T> void writePojoToToml(final String filePath, final T t) throws IOException {
         new ObjectMapper(new TomlFactory())
                 .findAndRegisterModules()
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
@@ -190,7 +190,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static synchronized <T> void writePojoToProperties(final String filePath, final T t) throws IOException {
+    public static <T> void writePojoToProperties(final String filePath, final T t) throws IOException {
         new JavaPropsMapper().writerFor(t.getClass()).writeValue(new File(filePath), t);
     }
 
@@ -201,7 +201,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static synchronized <T extends Map<String, String>> void writePojoToProperties(final String filePath, final T tMap) throws IOException {
+    public static <T extends Map<String, String>> void writePojoToProperties(final String filePath, final T tMap) throws IOException {
         new JavaPropsMapper().writerFor(new TypeReference<T>() {}).writeValue(new File(filePath), tMap);
     }
 }
