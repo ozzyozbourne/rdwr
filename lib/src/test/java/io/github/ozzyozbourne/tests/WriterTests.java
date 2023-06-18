@@ -1,5 +1,6 @@
 package io.github.ozzyozbourne.tests;
 
+import io.github.ozzyozbourne.pojos.CsvRec;
 import io.github.ozzyozbourne.pojos.Order;
 import lombok.val;
 import org.testng.Assert;
@@ -38,5 +39,12 @@ public final class WriterTests {
 
         writePojoToProperties(PATH_TO_RC_WR + "Test.properties", res.get());
         Assert.assertTrue(new File(PATH_TO_RC_WR + "Test.properties").exists());
+    }
+
+    public void csvWriterTestOne() throws IOException {
+        val csvOptional  = readCsvToPojo(PATH_TO_RC_RD + "CsvTest.csv", CsvRec.class, '|', true);
+        Assert.assertTrue(csvOptional.isPresent());
+        writePojoToCsv(PATH_TO_RC_WR + "CsvTest.csv", csvOptional.get(), CsvRec.class, '|', true);
+
     }
 }

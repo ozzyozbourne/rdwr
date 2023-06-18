@@ -90,16 +90,16 @@ public final class Rdwr {
      * @param tList pojo class type List
      * @param t pojo class type
      * @param separator csv file separator being used
-     * @param header whether to write or leave the header row
+     * @param useHeader whether to write or leave the header row
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static synchronized <T> void writePojoToCsv(final String filePath, final List<T> tList, final Class<T> t, final char separator, final boolean header) throws IOException {
+    public static synchronized <T> void writePojoToCsv(final String filePath, final List<T> tList, final Class<T> t, final char separator, final boolean useHeader) throws IOException {
         final CsvMapper mapper = new CsvMapper();
         mapper.writer(mapper
                 .schemaFor(t)
                 .withColumnSeparator(separator)
-                .withUseHeader(header)
+                .withUseHeader(useHeader)
                 .withoutQuoteChar())
                 .writeValue(new File(filePath), tList);
     }
