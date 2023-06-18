@@ -1,4 +1,4 @@
-package io.github.ozzyozbourne.pojos.yaml;
+package io.github.ozzyozbourne.pojos;
 
 import java.math.BigDecimal;
 
