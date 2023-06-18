@@ -44,7 +44,6 @@ public final class ReaderTests {
         Assert.assertEquals(res.get(), "A001");
     }
 
-
     public void CsvTestOne() throws IOException {
         val csvOptional  = readCsvToPojo(PATH_TO_RC + "CsvTest.csv", CsvRec.class, '|', true);
         Assert.assertTrue(csvOptional.isPresent());
