@@ -1,18 +1,26 @@
 package io.github.ozzyozbourne;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
 import com.fasterxml.jackson.dataformat.toml.TomlFactory;
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Predicate;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -205,5 +213,48 @@ public final class Rdwr {
      */
     public static <T extends Map<String, String>> void writePojoToProperties(final String filePath, final T tMap) throws IOException {
         new JavaPropsMapper().writerFor(new TypeReference<T>() {}).writeValue(new File(filePath), tMap);
+    }
+
+    /***
+     *
+     * @param filePath path to xml file
+     * @param tClass xml pojo class
+     * @return Xml mapped to POJO
+     * @param <T> Expected java type
+     */
+    public static <T> Optional<T>  readXmlToPojo (final String filePath, final Class<T> tClass) throws IOException {
+        return Optional.of(new XmlMapper(new XmlFactory()
+                .configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true))
+                .findAndRegisterModules()
+                .readValue(new File(filePath), tClass));
+    }
+
+    /**
+     *
+     * @param filePath path to xml file
+     * @param t Pojo to be written
+     * @param <T> Expected java type
+     * @throws IOException Write exception
+     */
+    public static <T> void writePojoToXml (final String filePath, final T t) throws IOException {
+        new XmlMapper(new XmlFactory()
+                .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true))
+                .findAndRegisterModules()
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .writeValue(new File(filePath), t);
+    }
+
+    /**
+     * @param t Pojo to be written
+     * @param <T> Expected java type
+     * @throws IOException Write exception
+     * @return Optional String of xml
+     */
+    public static <T> Optional<String> writePojoToXmlString (final T t) throws IOException {
+        return Optional.of(new XmlMapper(new XmlFactory()
+                .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true))
+                .findAndRegisterModules()
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .writeValueAsString(t));
     }
 }
