@@ -2,18 +2,6 @@ package io.github.ozzyozbourne;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
-import com.fasterxml.jackson.dataformat.toml.TomlFactory;
-import com.fasterxml.jackson.dataformat.toml.TomlMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlFactory;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Predicate;
 import org.yaml.snakeyaml.Yaml;
@@ -26,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 /**
  *This class contains reader and writers for YAML, TOML, JSON, XML CSV and PROPERTIES file formats
@@ -44,7 +33,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T> srcInToml (final String pathToGet, final String pathToFile) throws IOException {
-        return Optional.of(JsonPath.read(new TomlMapper().readTree(new File(pathToFile)).toString(), pathToGet));
+        return Optional.of(JsonPath.read(TomlMapperSingleton.INSTANCE.tomlMapper.readTree(new File(pathToFile)).toString(), pathToGet));
     }
 
     /**
@@ -56,7 +45,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T> srcInYaml (final String pathToGet, final String pathToFile) throws IOException {
-        return Optional.of(JsonPath.read(new ObjectMapper().valueToTree(new Yaml().load(new FileReader(pathToFile))).toString(), pathToGet));
+        return Optional.of(JsonPath.read(ObjectMapperSingleton.INSTANCE.objectMapper.valueToTree(new Yaml().load(new FileReader(pathToFile))).toString(), pathToGet));
     }
 
     /**
@@ -83,10 +72,9 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<List<T>> readCsvToPojo(final String filePath, final Class<T> t, final char separator, final boolean skipFirstRow) throws IOException {
-        final CsvMapper csvMapper = CsvMapper.csvBuilder().build();
         Optional<List<T>> optionalTList;
-        try(MappingIterator<T> iterator = csvMapper.readerFor(t)
-                .with(csvMapper.schemaFor(t)
+        try(MappingIterator<T> iterator = MapperCsvSingleton.INSTANCE.csvMapper.readerFor(t)
+                .with(MapperCsvSingleton.INSTANCE.csvMapper.schemaFor(t)
                         .withSkipFirstDataRow(skipFirstRow)
                         .withColumnSeparator(separator))
                 .readValues(new File(filePath))){
@@ -105,8 +93,8 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> void writePojoToCsv(final String filePath, final List<T> tList, final Class<T> t, final char separator, final boolean useHeader) throws IOException {
-        final CsvMapper mapper = new CsvMapper();
-        mapper.writer(mapper
+        MapperCsvSingleton.INSTANCE.csvMapper
+                .writer(MapperCsvSingleton.INSTANCE.csvMapper
                 .schemaFor(t)
                 .withColumnSeparator(separator)
                 .withUseHeader(useHeader)
@@ -123,9 +111,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T>  readYamlToPojo(final String filePath, final Class<T> t) throws IOException {
-      return Optional.of(new ObjectMapper(new YAMLFactory())
-              .findAndRegisterModules()
-              .readValue(new File(filePath), t));
+      return Optional.of(MapperYmlSingleton.INSTANCE.objectMapper.readValue(new File(filePath), t));
     }
 
     /***
@@ -137,9 +123,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T>  readTomlToPojo(final String filePath, final Class<T> t) throws IOException {
-        return Optional.of(new ObjectMapper(new TomlFactory())
-                .findAndRegisterModules()
-                .readValue(new File(filePath), t));
+        return Optional.of(MapperTmlSingleton.INSTANCE.objectMapper.readValue(new File(filePath), t));
     }
 
     /***
@@ -150,11 +134,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> void writePojoToYaml(final String filePath, final T t) throws IOException {
-        new ObjectMapper(new YAMLFactory()
-                .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER))
-                .findAndRegisterModules()
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .writeValue(new File(filePath), t);
+       MapperYmlSingleton.INSTANCE.objectMapper.writeValue(new File(filePath), t);
     }
 
     /***
@@ -165,10 +145,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> void writePojoToToml(final String filePath, final T t) throws IOException {
-        new ObjectMapper(new TomlFactory())
-                .findAndRegisterModules()
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .writeValue(new File(filePath), t);
+       MapperTmlSingleton.INSTANCE.objectMapper.writeValue(new File(filePath), t);
     }
 
     /**
@@ -178,7 +155,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static Optional<Map<String, String>> getValueFromProp(final String filePath) throws IOException {
-        return Optional.of(new JavaPropsMapper().readValue(new File(filePath), new TypeReference<>(){}));
+        return Optional.of(JPropSingleton.INSTANCE.javaPropsMapper.readValue(new File(filePath), new TypeReference<>(){}));
     }
 
     /**
@@ -190,7 +167,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> Optional<T> getValueFromProp(final String filePath, final Class<T> t) throws IOException {
-        return Optional.of(new JavaPropsMapper().readValue(new File(filePath), t));
+        return Optional.of(JPropSingleton.INSTANCE.javaPropsMapper.readValue(new File(filePath), t));
     }
 
     /**
@@ -201,7 +178,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T> void writePojoToProperties(final String filePath, final T t) throws IOException {
-        new JavaPropsMapper().writerFor(t.getClass()).writeValue(new File(filePath), t);
+        JPropSingleton.INSTANCE.javaPropsMapper.writerFor(t.getClass()).writeValue(new File(filePath), t);
     }
 
     /***
@@ -212,7 +189,7 @@ public final class Rdwr {
      * @throws IOException when file exception occurs
      */
     public static <T extends Map<String, String>> void writePojoToProperties(final String filePath, final T tMap) throws IOException {
-        new JavaPropsMapper().writerFor(new TypeReference<T>() {}).writeValue(new File(filePath), tMap);
+        JPropSingleton.INSTANCE.javaPropsMapper.writerFor(new TypeReference<T>() {}).writeValue(new File(filePath), tMap);
     }
 
     /***
@@ -223,10 +200,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      */
     public static <T> Optional<T>  readXmlToPojo (final String filePath, final Class<T> tClass) throws IOException {
-        return Optional.of(new XmlMapper(new XmlFactory()
-                .configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true))
-                .findAndRegisterModules()
-                .readValue(new File(filePath), tClass));
+        return Optional.of(MapperXmlSingleton.INSTANCE.objectMapper.readValue(new File(filePath), tClass));
     }
 
     /**
@@ -237,11 +211,7 @@ public final class Rdwr {
      * @throws IOException Write exception
      */
     public static <T> void writePojoToXml (final String filePath, final T t) throws IOException {
-        new XmlMapper(new XmlFactory()
-                .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true))
-                .findAndRegisterModules()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .writeValue(new File(filePath), t);
+        MapperXmlSingleton.INSTANCE.objectMapper.writeValue(new File(filePath), t);
     }
 
     /**
@@ -251,10 +221,6 @@ public final class Rdwr {
      * @return Optional String of xml
      */
     public static <T> Optional<String> writePojoToXmlString (final T t) throws IOException {
-        return Optional.of(new XmlMapper(new XmlFactory()
-                .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true))
-                .findAndRegisterModules()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .writeValueAsString(t));
+        return Optional.of(MapperXmlSingleton.INSTANCE.objectMapper.writeValueAsString(t));
     }
 }
