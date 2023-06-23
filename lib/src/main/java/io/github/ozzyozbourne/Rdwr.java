@@ -223,4 +223,38 @@ public final class Rdwr {
     public static <T> Optional<String> writePojoToXmlString (final T t) throws IOException {
         return Optional.of(MapperXmlSingleton.INSTANCE.objectMapper.writeValueAsString(t));
     }
+
+    /***
+     *
+     * @param filePath path to json file
+     * @param tClass Pojo class mapped to json
+     * @return Expected java type
+     * @param <T> Expected java class type
+     * @throws IOException Reading exception
+     */
+    public static <T> Optional<T>  readJsonToPojo(final String filePath, final Class<T> tClass) throws IOException {
+       return Optional.of(ObjectMapperSingleton.INSTANCE.objectMapper.readValue(new File(filePath), tClass));
+    }
+
+    /***
+     * @param t Pojo mapped to json
+     * @param <T> Expected java class type
+     * @return Json String
+     * @throws IOException Reading exception
+     */
+    public static <T> Optional<String> writePojoToJsonString(final T t) throws IOException {
+      return Optional.of(ObjectMapperSingleton.INSTANCE.objectMapper.writeValueAsString(t));
+    }
+
+    /***
+     *
+     * @param filePath path to json file
+     * @param tClass Pojo class mapped to json
+     * @param <T> Expected java class type
+     * @throws IOException Reading exception
+     */
+    public static <T> void writePojoToJsonFile(final String filePath, final Class<T> tClass) throws IOException {
+        ObjectMapperSingleton.INSTANCE.objectMapper.writeValue(new File(filePath), tClass);
+    }
+
 }
