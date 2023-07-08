@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Reader and Writer Test Suite" >
+<suite name="Reader and Writer Test Suite" thread-count="220" parallel="tests">
 
-    <test name="Reader Test">
+    <test name="Reader Test" thread-count="20" parallel="methods">
         <classes>
             <class name="io.github.ozzyozbourne.tests.ReaderTests"/>
         </classes>
     </test>
 
-    <test name="Writer Test">
+    <test name="Writer Test" thread-count="20" parallel="methods">
         <classes>
             <class name="io.github.ozzyozbourne.tests.WriterTests"/>
+        </classes>
+    </test>
+
+    <test name="Threaded Test" thread-count="20" parallel="methods">
+        <classes>
+            <class name="io.github.ozzyozbourne.tests.ThreadedTests"/>
         </classes>
     </test>
 
