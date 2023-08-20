@@ -52,7 +52,7 @@ public final class WriterTests {
     public void csvWriterTestOne() throws IOException {
         val csvOptional  = readCsvToPojo(PATH_TO_RD + "CsvTest.csv", CsvRec.class, '|', true);
         Assert.assertTrue(csvOptional.isPresent());
-        writePojoToCsv(PATH_TO_WR + "CsvTest.csv", csvOptional.get(), CsvRec.class, '|', true);
+        writePojoToCsv(PATH_TO_WR + "CsvTest.csv", csvOptional.get(), '|', true);
 
     }
 }
