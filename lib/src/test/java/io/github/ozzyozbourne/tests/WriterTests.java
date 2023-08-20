@@ -11,49 +11,48 @@ import java.io.File;
 import java.io.IOException;
 
 import static io.github.ozzyozbourne.Rdwr.*;
+import static io.github.ozzyozbourne.tests.Constants.PATH_TO_RD;
+import static io.github.ozzyozbourne.tests.Constants.PATH_TO_WR;
 
 @Test
 public final class WriterTests {
 
-    private static final String PATH_TO_RC_RD = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "read" + File.separator;
-    private static final String PATH_TO_RC_WR = "src" + File.separator + "test" + File.separator + "resources" + File.separator + "write" + File.separator;
-
     public void YamlTestOne() throws IOException {
-        val res = readYamlToPojo(PATH_TO_RC_RD + "YamlTest.yaml", Order.class);
+        val res = readYamlToPojo(PATH_TO_RD + "YamlTest.yaml", Order.class);
         Assert.assertTrue(res.isPresent());
 
-        writePojoToYaml(PATH_TO_RC_WR + "YamlTest.yaml", res.get());
-        Assert.assertTrue(new File(PATH_TO_RC_WR + "YamlTest.yaml").exists());
+        writePojoToYaml(PATH_TO_WR + "YamlTest.yaml", res.get());
+        Assert.assertTrue(new File(PATH_TO_WR + "YamlTest.yaml").exists());
     }
 
     public void TomlTestOne() throws IOException {
-        val res = readTomlToPojo(PATH_TO_RC_RD + "TomlTest.toml", Order.class);
+        val res = readTomlToPojo(PATH_TO_RD + "TomlTest.toml", Order.class);
         Assert.assertTrue(res.isPresent());
 
-        writePojoToToml(PATH_TO_RC_WR + "TomlTest.toml", res.get());
-        Assert.assertTrue(new File(PATH_TO_RC_WR + "TomlTest.toml").exists());
+        writePojoToToml(PATH_TO_WR + "TomlTest.toml", res.get());
+        Assert.assertTrue(new File(PATH_TO_WR + "TomlTest.toml").exists());
     }
 
     public void PropTestOne() throws IOException {
-        val res = getValueFromProp(PATH_TO_RC_RD + "Test.properties");
+        val res = getValueFromProp(PATH_TO_RD + "Test.properties");
         Assert.assertTrue(res.isPresent());
 
-        writePojoToProperties(PATH_TO_RC_WR + "Test.properties", res.get());
-        Assert.assertTrue(new File(PATH_TO_RC_WR + "Test.properties").exists());
+        writePojoToProperties(PATH_TO_WR + "Test.properties", res.get());
+        Assert.assertTrue(new File(PATH_TO_WR + "Test.properties").exists());
     }
 
     public void PropTestTwo() throws IOException {
-        val res = getValueFromProp(PATH_TO_RC_RD + "Test.properties", Prop.class);
+        val res = getValueFromProp(PATH_TO_RD + "Test.properties", Prop.class);
         Assert.assertTrue(res.isPresent());
 
-        writePojoToProperties(PATH_TO_RC_WR + "TestTwo.properties", res.get());
-        Assert.assertTrue(new File(PATH_TO_RC_WR + "TestTwo.properties").exists());
+        writePojoToProperties(PATH_TO_WR + "TestTwo.properties", res.get());
+        Assert.assertTrue(new File(PATH_TO_WR + "TestTwo.properties").exists());
     }
 
     public void csvWriterTestOne() throws IOException {
-        val csvOptional  = readCsvToPojo(PATH_TO_RC_RD + "CsvTest.csv", CsvRec.class, '|', true);
+        val csvOptional  = readCsvToPojo(PATH_TO_RD + "CsvTest.csv", CsvRec.class, '|', true);
         Assert.assertTrue(csvOptional.isPresent());
-        writePojoToCsv(PATH_TO_RC_WR + "CsvTest.csv", csvOptional.get(), CsvRec.class, '|', true);
+        writePojoToCsv(PATH_TO_WR + "CsvTest.csv", csvOptional.get(), CsvRec.class, '|', true);
 
     }
 }
