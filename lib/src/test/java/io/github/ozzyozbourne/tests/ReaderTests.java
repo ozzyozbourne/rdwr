@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static io.github.ozzyozbourne.Rdwr.*;
@@ -76,6 +77,7 @@ public final class ReaderTests {
         Assert.assertEquals(res.get().get("height"), "54685465131354311cm");
     }
 
+
     public void PropTestTwo() throws IOException {
         val res = readPropToPojo(PATH_TO_RD + "Test.properties", Prop.class);
         Assert.assertTrue(res.isPresent());
@@ -83,5 +85,16 @@ public final class ReaderTests {
         Assert.assertEquals(res.get().name(), "osaid");
         Assert.assertEquals(res.get().height(), "54685465131354311cm");
     }
+
+    public void PropTestThree() throws IOException {
+        val res = readProp(PATH_TO_RD + "Test.properties");
+        Assert.assertTrue(res.isPresent());
+        Assert.assertEquals(res.get().get("age"), "654654");
+        Assert.assertEquals(res.get().get("name"), "osaid");
+        Assert.assertEquals(res.get().get("height"), "54685465131354311cm");
+        val m = (Map<String, String>)res.get().get("sun");
+        Assert.assertEquals(m.get("moon"), "qwe");
+    }
+
 
 }

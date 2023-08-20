@@ -2,7 +2,10 @@ package io.github.ozzyozbourne;
 
 import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
 
-enum JPropSingleton {
+/**
+ * Singleton Property Mapper
+ */
+public enum JPropSingleton {
 
     INSTANCE(config());
 

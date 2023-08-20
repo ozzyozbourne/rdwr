@@ -2,7 +2,10 @@ package io.github.ozzyozbourne;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-enum ObjectMapperSingleton {
+/**
+ * Singleton Object Mapper
+ */
+public enum ObjectMapperSingleton {
 
     INSTANCE(config());
 

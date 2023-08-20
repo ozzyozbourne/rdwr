@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.toml.TomlFactory;
 
-enum MapperTmlSingleton {
+/**
+ * Singleton Toml Object Mapper
+ */
+public enum MapperTmlSingleton {
 
     INSTANCE(config());
 
