@@ -86,7 +86,6 @@ public final class Rdwr {
      *
      * @param filePath path to csv file
      * @param tList pojo class type List
-     * @param t pojo class type
      * @param separator csv file separator being used
      * @param useHeader whether to write or leave the header row
      * @param <T> Expected java type
@@ -154,7 +153,7 @@ public final class Rdwr {
      * @return optional type containing and map of string and string
      * @throws IOException when file exception occurs
      */
-    public static Optional<Map<String, String>> readProp(final String filePath) throws IOException {
+    public static Optional<Map<String, ?>> readProp(final String filePath) throws IOException {
         return Optional.of(JPropSingleton.INSTANCE.javaPropsMapper.readValue(new File(filePath), new TypeReference<>(){}));
     }
 
