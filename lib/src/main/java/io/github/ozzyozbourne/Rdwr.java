@@ -92,10 +92,10 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static <T> void writePojoToCsv(final String filePath, final List<T> tList, final Class<T> t, final char separator, final boolean useHeader) throws IOException {
+    public static <T> void writePojoToCsv(final String filePath, final List<T> tList, final char separator, final boolean useHeader) throws IOException {
         MapperCsvSingleton.INSTANCE.csvMapper
                 .writer(MapperCsvSingleton.INSTANCE.csvMapper
-                .schemaFor(t)
+                .schemaFor(tList.get(0).getClass())
                 .withColumnSeparator(separator)
                 .withUseHeader(useHeader)
                 .withoutQuoteChar())

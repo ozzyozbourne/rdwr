@@ -26,5 +26,8 @@ public interface Constants {
     String PATH_PRP_RD = PATH_TO_TH + "prop" + File.separator + "read" + File.separator;
     String PATH_PRP_WR = PATH_TO_TH + "prop" + File.separator + "write" + File.separator;
 
+    String PATH_CSV_RD = PATH_TO_TH + "csv" + File.separator + "read" + File.separator;
+    String PATH_CSV_WR = PATH_TO_TH + "csv" + File.separator + "write" + File.separator;
+
 
 }
