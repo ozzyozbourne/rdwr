@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Reader and Writer Test Suite" thread-count="150" parallel="tests">
+<suite name="Reader and Writer Test Suite" thread-count="100" parallel="tests">
 
     <test name="Reader Test" thread-count="20" parallel="methods">
         <classes>
@@ -23,6 +23,24 @@
     <test name="Toml Threaded Test" thread-count="100" parallel="methods">
         <classes>
             <class name="io.github.ozzyozbourne.tests.threaded.TomlRWTest"/>
+        </classes>
+    </test>
+
+    <test name="Json Threaded Test" thread-count="100" parallel="methods">
+        <classes>
+            <class name="io.github.ozzyozbourne.tests.threaded.JsonRWTest"/>
+        </classes>
+    </test>
+
+    <test name="Prop Threaded Test" thread-count="100" parallel="methods">
+        <classes>
+            <class name="io.github.ozzyozbourne.tests.threaded.PropRWTest"/>
+        </classes>
+    </test>
+
+    <test name="Csv Threaded Test" thread-count="100" parallel="methods">
+        <classes>
+            <class name="io.github.ozzyozbourne.tests.threaded.CsvRWTest"/>
         </classes>
     </test>
 
