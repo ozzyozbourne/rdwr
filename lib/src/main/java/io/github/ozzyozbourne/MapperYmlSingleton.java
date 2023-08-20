@@ -10,6 +10,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
  */
 public enum MapperYmlSingleton {
 
+    /**
+     * Init Yaml mapper singleton
+     */
     INSTANCE(config());
 
     final ObjectMapper objectMapper;

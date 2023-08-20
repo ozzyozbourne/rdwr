@@ -7,6 +7,9 @@ import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
  */
 public enum JPropSingleton {
 
+    /**
+     * Init Prop singleton
+     */
     INSTANCE(config());
 
     final JavaPropsMapper javaPropsMapper;

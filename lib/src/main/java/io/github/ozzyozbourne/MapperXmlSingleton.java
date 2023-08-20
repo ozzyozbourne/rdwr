@@ -12,6 +12,9 @@ import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
  */
 public enum MapperXmlSingleton {
 
+    /**
+     * Init Xml mapper singleton
+     */
     INSTANCE(config());
 
     final ObjectMapper objectMapper;

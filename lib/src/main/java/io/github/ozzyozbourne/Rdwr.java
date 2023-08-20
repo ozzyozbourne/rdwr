@@ -197,6 +197,7 @@ public final class Rdwr {
      * @param tClass xml pojo class
      * @return Xml mapped to POJO
      * @param <T> Expected java type
+     * @throws IOException when file exception occurs
      */
     public static <T> Optional<T>  readXmlToPojo (final String filePath, final Class<T> tClass) throws IOException {
         return Optional.of(MapperXmlSingleton.INSTANCE.objectMapper.readValue(new File(filePath), tClass));

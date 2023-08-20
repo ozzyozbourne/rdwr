@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public enum ObjectMapperSingleton {
 
+    /**
+     * Init Object Mapper singleton
+     */
     INSTANCE(config());
 
     final ObjectMapper objectMapper;

@@ -7,6 +7,9 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
  */
 public enum MapperCsvSingleton {
 
+    /**
+     * Init CSV mapper singleton
+     */
     INSTANCE(config());
 
     final CsvMapper csvMapper;
