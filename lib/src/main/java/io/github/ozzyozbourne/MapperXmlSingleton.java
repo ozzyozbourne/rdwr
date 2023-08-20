@@ -7,6 +7,9 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 
+/**
+ * Singleton Xml Mapper
+ */
 public enum MapperXmlSingleton {
 
     INSTANCE(config());

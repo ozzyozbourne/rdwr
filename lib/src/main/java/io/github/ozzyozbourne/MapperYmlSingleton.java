@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
-enum MapperYmlSingleton {
+/**
+ * Singleton Yaml Mapper
+ */
+public enum MapperYmlSingleton {
 
     INSTANCE(config());
 

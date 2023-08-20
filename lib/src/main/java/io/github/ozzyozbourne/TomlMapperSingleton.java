@@ -2,7 +2,10 @@ package io.github.ozzyozbourne;
 
 import com.fasterxml.jackson.dataformat.toml.TomlMapper;
 
-enum TomlMapperSingleton {
+/**
+ * Singleton toml mapper
+ */
+public enum TomlMapperSingleton {
 
     INSTANCE(config());
 

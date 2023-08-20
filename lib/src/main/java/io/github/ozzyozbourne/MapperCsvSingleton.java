@@ -2,6 +2,9 @@ package io.github.ozzyozbourne;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 
+/**
+ * Singleton CSV Mapper
+ */
 public enum MapperCsvSingleton {
 
     INSTANCE(config());
