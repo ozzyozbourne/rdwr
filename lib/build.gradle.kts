@@ -20,7 +20,7 @@ dependencies {
     api("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.2")
     api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
     api("com.jayway.jsonpath:json-path:2.8.0")
-    api("org.yaml:snakeyaml:2.0")
+    api("org.yaml:snakeyaml:2.1")
 
     testImplementation("org.testng:testng:7.8.0")
     testImplementation("net.datafaker:datafaker:1.9.0")
@@ -52,7 +52,7 @@ publishing {
         create<MavenPublication>("mavenJava"){
             groupId = "io.github.ozzyozbourne"
             artifactId = "rdwr"
-            version = "0.4.0"
+            version = "0.3.1"
 
             from(components["java"])
 
