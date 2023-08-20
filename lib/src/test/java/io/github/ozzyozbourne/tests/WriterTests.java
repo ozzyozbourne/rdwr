@@ -34,7 +34,7 @@ public final class WriterTests {
     }
 
     public void PropTestOne() throws IOException {
-        val res = getValueFromProp(PATH_TO_RD + "Test.properties");
+        val res = readProp(PATH_TO_RD + "Test.properties");
         Assert.assertTrue(res.isPresent());
 
         writePojoToProperties(PATH_TO_WR + "Test.properties", res.get());
@@ -42,7 +42,7 @@ public final class WriterTests {
     }
 
     public void PropTestTwo() throws IOException {
-        val res = getValueFromProp(PATH_TO_RD + "Test.properties", Prop.class);
+        val res = readPropToPojo(PATH_TO_RD + "Test.properties", Prop.class);
         Assert.assertTrue(res.isPresent());
 
         writePojoToProperties(PATH_TO_WR + "TestTwo.properties", res.get());

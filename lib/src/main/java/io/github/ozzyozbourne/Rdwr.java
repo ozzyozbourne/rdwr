@@ -154,7 +154,7 @@ public final class Rdwr {
      * @return optional type containing and map of string and string
      * @throws IOException when file exception occurs
      */
-    public static Optional<Map<String, String>> getValueFromProp(final String filePath) throws IOException {
+    public static Optional<Map<String, String>> readProp(final String filePath) throws IOException {
         return Optional.of(JPropSingleton.INSTANCE.javaPropsMapper.readValue(new File(filePath), new TypeReference<>(){}));
     }
 
@@ -166,7 +166,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static <T> Optional<T> getValueFromProp(final String filePath, final Class<T> t) throws IOException {
+    public static <T> Optional<T> readPropToPojo(final String filePath, final Class<T> t) throws IOException {
         return Optional.of(JPropSingleton.INSTANCE.javaPropsMapper.readValue(new File(filePath), t));
     }
 
@@ -188,7 +188,7 @@ public final class Rdwr {
      * @param <T> Expected java type
      * @throws IOException when file exception occurs
      */
-    public static <T extends Map<String, String>> void writePojoToProperties(final String filePath, final T tMap) throws IOException {
+    public static <T extends Map<? , ?>> void writeMapToProperties(final String filePath, final T tMap) throws IOException {
         JPropSingleton.INSTANCE.javaPropsMapper.writerFor(new TypeReference<T>() {}).writeValue(new File(filePath), tMap);
     }
 
