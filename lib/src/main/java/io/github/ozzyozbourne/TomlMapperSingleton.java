@@ -7,6 +7,9 @@ import com.fasterxml.jackson.dataformat.toml.TomlMapper;
  */
 public enum TomlMapperSingleton {
 
+    /**
+     * Init Toml singleton
+     */
     INSTANCE(config());
 
     final TomlMapper tomlMapper;

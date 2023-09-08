@@ -4,7 +4,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("io.freefair.lombok") version "8.0.1"
+    libs.plugins.lombok
 }
 
 repositories {
@@ -12,19 +12,19 @@ repositories {
 }
 
 dependencies {
-    api("com.fasterxml.jackson.core:jackson-databind:2.15.2")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.15.2")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-properties:2.15.2")
-    api("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.2")
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
-    api("com.jayway.jsonpath:json-path:2.8.0")
-    api("org.yaml:snakeyaml:2.1")
+    api(libs.databind)
+    api(libs.dataformatxml)
+    api(libs.dataformatyaml)
+    api(libs.dataformattoml)
+    api(libs.dataformatproperties)
+    api(libs.dataformatcsv)
+    api(libs.dataformatjsr)
+    api(libs.jsonpath)
+    api(libs.snakeyaml)
 
-    testImplementation("org.testng:testng:7.8.0")
-    testImplementation("net.datafaker:datafaker:1.9.0")
-    testImplementation("ch.qos.logback:logback-classic:1.4.5")
+    testImplementation(libs.testng)
+    testImplementation(libs.datafaker)
+    testImplementation(libs.logbackclassic)
 }
 
 java {
