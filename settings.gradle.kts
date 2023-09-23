@@ -27,7 +27,7 @@ dependencyResolutionManagement {
             library("testng", "org.testng:testng:7.8.0")
             library("datafaker", "net.datafaker:datafaker:1.9.0")
             library("logbackclassic", "ch.qos.logback:logback-classic:1.4.5")
-            plugin("lombok", "io.freefair.lombok").version("8.0.1")
+            plugin("lombok", "io.freefair.lombok").version("8.3")
         }
     }
 }
