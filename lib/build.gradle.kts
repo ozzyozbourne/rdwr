@@ -4,7 +4,7 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    libs.plugins.lombok
+    alias(libs.plugins.lombok)
 }
 
 repositories {
