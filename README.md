@@ -107,6 +107,4 @@ A comprehensive usage is present in the tests directory
 
 Contributions to this library are welcome. Feel free to open issues or submit pull requests to improve the functionality or add support for additional data formats.
 
-### License
 
-This project is licensed under the [MIT License](https://www.opensource.org/licenses/mit-license.php)
