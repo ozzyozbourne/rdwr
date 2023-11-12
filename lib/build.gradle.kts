@@ -63,13 +63,6 @@ publishing {
                 url.set("https://github.com/ozzyozbourne/rdwr")
                 inceptionYear.set("2023")
 
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://www.opensource.org/licenses/mit-license.php")
-                    }
-                }
-
                 developers {
                     developer {
                         id.set("khanosaid")
